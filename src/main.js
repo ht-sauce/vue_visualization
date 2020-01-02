@@ -5,10 +5,10 @@ import store from './store';
 import components from './components/components';
 //css引入
 import '@/assets/css/rest.css';
+Vue.use(components);
 
 Vue.config.productionTip = false;
 new Vue({
-  components,
   router,
   store,
   render: h => h(App),

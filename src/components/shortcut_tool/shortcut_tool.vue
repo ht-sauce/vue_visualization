@@ -2,12 +2,19 @@
   <div id="shortcut_tool" style="-webkit-app-region: drag;">
     <div class="nav">
       <span class="title">{{ $store.state.title }}</span>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="seting">
+      <!--系统操作部分-->
       <template v-for="(item, index) in tools">
         <span
           :key="index"
-          @click="item.event"
+          @click="item.event(item)"
           class="iconfont"
           :class="item.icon"
           v-show="item.show"
@@ -27,13 +34,27 @@ export default {
           title: '缩小进入任务栏',
           show: true,
           icon: 'icon-suoxiao1',
-          event: () => {},
+          event: () => {
+            this.BW_tool_button('minimize');
+          },
         },
         {
           title: '全屏或缩小窗口',
           show: true,
           icon: 'icon-chuangkou2',
-          event: () => {},
+          type: 'maximize',
+          event: item => {
+            const focusWin = BrowserWindow.getFocusedWindow();
+            this.BW_tool_button(item.type);
+            // 判断窗口是否最大最小化
+            if (focusWin.isMaximized()) {
+              item.type = 'unmaximize';
+              item.icon = 'icon-chuangkou1';
+            } else {
+              item.type = 'maximize';
+              item.icon = 'icon-chuangkou2';
+            }
+          },
         },
         {
           title: '关闭窗口',
@@ -60,6 +81,7 @@ export default {
           },
         },
       ],
+      router_history: [], //路由记录表
     };
   },
   beforeCreate() {},
@@ -71,13 +93,22 @@ export default {
       const focusWin = BrowserWindow.getFocusedWindow();
       switch (type) {
         case 'reload':
-          focusWin && focusWin.reload();
+          focusWin.reload();
           break;
         case 'toggleDevTools':
-          focusWin && focusWin.toggleDevTools();
+          focusWin.toggleDevTools();
           break;
         case 'close':
-          focusWin && focusWin.close();
+          focusWin.close();
+          break;
+        case 'minimize':
+          focusWin.minimize();
+          break;
+        case 'maximize':
+          focusWin.maximize();
+          break;
+        case 'unmaximize':
+          focusWin.unmaximize();
           break;
       }
     },
@@ -100,11 +131,16 @@ export default {
   > * {
     -webkit-app-region: no-drag;
   }
+  .nav {
+    display: flex;
+    align-items: center;
+  }
   .seting {
     > span {
       display: inline-block;
       font-size: 18px;
       margin-left: 10px;
+      line-height: 30px;
       &:hover {
         color: #ffffff;
         text-shadow: #ffffff 0 0 2px;
