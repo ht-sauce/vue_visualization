@@ -1,32 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <shortcut-tool></shortcut-tool>
     <router-view />
   </div>
 </template>
+<script>
+export default {
+  components: {
+    shortcutTool: () => import('@/components/shortcut_tool/shortcut_tool.vue'),
+  },
+  created() {},
+  mounted() {},
+  methods: {},
+};
+</script>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+#browser {
+  width: 100%;
+  height: 70%;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+#app {
+  width: 100vw;
+  height: 100vh;
 }
 </style>
