@@ -2,11 +2,11 @@
   <div id="shortcut_tool" style="-webkit-app-region: drag;">
     <div class="nav">
       <span class="title">{{ $store.state.title }}</span>
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb
+        class="router-history"
+        separator-class="el-icon-arrow-right"
+      >
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="seting">
@@ -85,7 +85,9 @@ export default {
     };
   },
   beforeCreate() {},
-  created() {},
+  created() {
+    console.log(this.$router);
+  },
   beforeMount() {},
   mounted() {},
   methods: {
@@ -117,23 +119,37 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/css/global.scss';
 #shortcut_tool {
   width: 100vw;
   height: 30px;
-  background: #333333;
-  border-bottom: #333333 1px solid;
-  padding: 0 15px;
+  background: $main-background-color;
+  border-bottom: $secondary-border-color 1px solid;
+  padding: 0 $main-padding-spacing;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  color: #f9f9f9;
+  font-size: $h6;
+  color: $main-font-color;
   > * {
     -webkit-app-region: no-drag;
   }
   .nav {
     display: flex;
     align-items: center;
+    .title {
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .router-history {
+      margin-left: $main-spacing-div;
+      overflow: hidden;
+      flex: 1;
+      width: 100%;
+      font-size: 10px;
+    }
   }
   .seting {
     > span {
@@ -142,8 +158,7 @@ export default {
       margin-left: 10px;
       line-height: 30px;
       &:hover {
-        color: #ffffff;
-        text-shadow: #ffffff 0 0 2px;
+        text-shadow: $occupy-font-color 0 0 5px;
         font-weight: bold;
       }
     }
